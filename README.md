@@ -221,8 +221,8 @@ To work on the frontend alone against an existing backend: `npm --prefix fronten
 transports and temporary databases, without external websites. Frontend tests cover API errors,
 poll cleanup, real heartbeat data, graph gaps/null latency, and incident evidence links.
 The native smoke test uses real local HTTP servers and process stop/start, including DB recovery.
-GitHub Actions defines backend, frontend, and container jobs; a workflow run must still be verified
-after the repository is pushed to GitHub.
+GitHub Actions passed for commit `fc9520a` on 2026-11-07: backend, frontend, and container jobs
+completed successfully in [CI run #1](https://github.com/Denofix/PulseBoard/actions/runs/42389935624).
 
 For the real container drill, including persistence, run:
 

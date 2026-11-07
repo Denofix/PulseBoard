@@ -14,6 +14,7 @@ Verified on 2026-11-07. Executed checks and prepared deployment work are disting
 | Production dependency audit | **Passed at time checked** | `npm audit --omit=dev --audit-level=high`: zero vulnerabilities reported |
 | Compose / public Compose / CI YAML | **Static parse passed** | YAML parsing is not Docker Compose schema or runtime validation |
 | Shell syntax | **Passed** | `bash -n scripts/smoke_compose.sh` |
+| GitHub Actions | **Passed** | Commit `fc9520a`; backend, frontend, and containers; [run #1](https://github.com/Denofix/PulseBoard/actions/runs/42389935624), total duration 2m 10s |
 
 Backend tests cover HTTP URL and environment validation; HTTP 200/204/299/301/500; disabled redirects;
 network and total timeouts; connection, DNS, and TLS errors; and stopping at response headers without
@@ -93,16 +94,15 @@ check on the VM: before closing the tabs, the latest observation was **#101 at 1
 reopening, it was **#109 at 15:44:03 UTC**. The supplied history screenshots show eight additional
 HTTP 200 observations at 15-second intervals over those two minutes. **VM browser-closed check: passed.**
 
-## Remaining acceptance and deployment
+## Remaining public deployment
 
 | Work | Next verification |
 | --- | --- |
-| GitHub Actions | Workflow authored; no remote push or hosted workflow run performed. |
 | Vercel | Configuration and instructions prepared from official docs; no deployment performed. |
 | Public API HTTPS / CORS | Caddy and a separate read-only Compose stack prepared; real DNS/TLS verification pending. |
 | Public demo URL | **Not published. No verified public URL exists yet.** |
 
 The 5–6 hour target is a planning estimate, not a claim of measured engineering time. Local MVP
 acceptance is complete, including the Compose drill and the manual browser-closed check on the VM.
-Remaining work is source publication and hosted CI, followed by public deployment verification when
-hosting is available.
+Source publication to [Denofix/PulseBoard](https://github.com/Denofix/PulseBoard) and hosted CI are
+complete. Remaining work is public deployment and verification when hosting is available.
