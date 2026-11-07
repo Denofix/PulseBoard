@@ -6,11 +6,12 @@ Verified on 2026-11-07. Executed checks and prepared deployment work are disting
 
 | Check | Result | Evidence |
 | --- | --- | --- |
-| Backend and smoke-runner regression tests | **68 passed** | `python -m pytest backend/tests -q`, 1.04 seconds |
+| Backend and smoke-runner regression tests | **78 passed** | `python -m pytest backend/tests -q`, 1.03 seconds; includes ten public-demo preflight regression cases |
 | Frontend tests | **9 passed** | `npm --prefix frontend test`, two test files |
 | Vue / TypeScript type checking | **Passed** | `vue-tsc --noEmit`, included in the build |
 | Frontend production build | **Passed** | Vite 7.3.7; JS 138.06 kB / 51.22 kB gzip |
 | Native process smoke test | **Passed** | Real local HTTP; 11 target observations, two closed incidents |
+| Read-only preview preflight | **Passed with native HTTP processes** | Three seeded targets; POST/DELETE 403; exact CORS and wrong-origin failure; history and incidents survive backend restart |
 | Production dependency audit | **Passed at time checked** | `npm audit --omit=dev --audit-level=high`: zero vulnerabilities reported |
 | Compose / public Compose / CI YAML | **Static parse passed** | YAML parsing is not Docker Compose schema or runtime validation |
 | Shell syntax | **Passed** | `bash -n scripts/smoke_compose.sh` |
@@ -101,6 +102,12 @@ HTTP 200 observations at 15-second intervals over those two minutes. **VM browse
 | Vercel | Configuration and instructions prepared from official docs; no deployment performed. |
 | Public API HTTPS / CORS | Caddy and a separate read-only Compose stack prepared; real DNS/TLS verification pending. |
 | Public demo URL | **Not published. No verified public URL exists yet.** |
+
+For a VM-only demonstration, `deploy/compose.tunnel.yaml` prepares a separate read-only stack and
+an optional Cloudflare Quick Tunnel. Its YAML parsed successfully; actual Compose startup on the VM
+is still pending. The preflight passed against native HTTP processes, including write rejection and
+exact-origin CORS. No actual Cloudflare URL or Vercel deployment has been verified yet; follow
+[the temporary demo guide](local-public-demo.md) and record the runtime results after launch.
 
 The 5–6 hour target is a planning estimate, not a claim of measured engineering time. Local MVP
 acceptance is complete, including the Compose drill and the manual browser-closed check on the VM.

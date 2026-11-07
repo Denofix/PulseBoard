@@ -9,6 +9,10 @@ demo URL has been provisioned. Platform documentation was checked on 2026-11-07:
 - [FastAPI: CORS](https://fastapi.tiangolo.com/tutorial/cors/)
 - [Caddy: automatic HTTPS and prerequisites](https://caddyserver.com/docs/automatic-https)
 
+If only a local VM is available, use the [temporary public demo guide](local-public-demo.md).
+It uses a separate read-only database and an HTTPS tunnel; the permanent server instructions below
+remain the recommended path for an always-on deployment.
+
 ## 1. Prepare the persistent server
 
 Use an Ubuntu server with Docker Engine and Compose v2. Copy or clone this repository, preserving

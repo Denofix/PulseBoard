@@ -240,6 +240,8 @@ for expected results and the separate browser-closed test.
 The frontend is prepared for **Vercel**; the stateful backend runs on a separate persistent server.
 See [deployment instructions](docs/deployment.md) for Vercel root/build settings, SPA fallback,
 `VITE_API_BASE_URL`, exact-origin CORS, Caddy HTTPS, and verification commands.
+With only a local VM, follow the [temporary public demo guide](docs/local-public-demo.md) for a
+separate read-only backend, persistent preview data, and a Cloudflare Quick Tunnel HTTPS address.
 
 The owner MVP has no login and is intended for loopback access or an SSH tunnel. The provided public
 stack forces backend read-only mode and seeds known demo URLs. CORS is not authentication.

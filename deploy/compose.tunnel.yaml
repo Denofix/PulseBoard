@@ -1,0 +1,48 @@
+name: pulseboard-preview
+services:
+  backend:
+    build: ../backend
+    restart: unless-stopped
+    init: true
+    environment:
+      PULSE_DATABASE_PATH: /data/pulseboard.sqlite3
+      PULSE_READ_ONLY: "true"
+      PULSE_SEED_DEMO: "true"
+      PULSE_DEMO_BASE_URL: http://demo-service:8081
+      PULSE_CORS_ORIGINS: ${TUNNEL_CORS_ORIGINS:-[]}
+      PULSE_INTERVAL_SECONDS: "15"
+      PULSE_TIMEOUT_SECONDS: "5"
+      PULSE_NETWORK_TIMEOUT_SECONDS: "3"
+      PULSE_CONCURRENCY: "5"
+      PULSE_MAX_SERVICES: "3"
+    ports: ["127.0.0.1:${TUNNEL_BACKEND_PORT:-8001}:8000"]
+    volumes: ["preview-data:/data"]
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/api/health', timeout=3)"]
+      interval: 5s
+      timeout: 5s
+      start_period: 10s
+      retries: 6
+    stop_grace_period: 15s
+  demo-service:
+    build:
+      context: ..
+      dockerfile: demo-service/Dockerfile
+    restart: unless-stopped
+    init: true
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8081/ok', timeout=3)"]
+      interval: 5s
+      timeout: 5s
+      retries: 6
+  tunnel:
+    image: cloudflare/cloudflared:latest
+    profiles: ["tunnel"]
+    restart: "no"
+    init: true
+    command: ["tunnel", "--no-autoupdate", "--url", "http://backend:8000"]
+    depends_on:
+      backend:
+        condition: service_healthy
+volumes:
+  preview-data:
