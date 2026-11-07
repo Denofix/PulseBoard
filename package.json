@@ -1,0 +1,9 @@
+{
+  "name": "pulseboard",
+  "private": true,
+  "version": "0.1.0",
+  "scripts": {
+    "dev": "python3 scripts/dev.py",
+    "build": "npm --prefix frontend run build"
+  }
+}

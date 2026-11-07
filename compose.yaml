@@ -1,0 +1,50 @@
+name: pulseboard
+services:
+  backend:
+    build: ./backend
+    restart: unless-stopped
+    init: true
+    environment:
+      PULSE_DATABASE_PATH: /data/pulseboard.sqlite3
+      PULSE_INTERVAL_SECONDS: ${PULSE_INTERVAL_SECONDS:-15}
+      PULSE_TIMEOUT_SECONDS: ${PULSE_TIMEOUT_SECONDS:-5}
+      PULSE_NETWORK_TIMEOUT_SECONDS: ${PULSE_NETWORK_TIMEOUT_SECONDS:-3}
+      PULSE_CONCURRENCY: ${PULSE_CONCURRENCY:-5}
+      PULSE_MAX_SERVICES: ${PULSE_MAX_SERVICES:-100}
+      PULSE_READ_ONLY: ${PULSE_READ_ONLY:-false}
+      PULSE_SEED_DEMO: ${PULSE_SEED_DEMO:-false}
+      PULSE_DEMO_BASE_URL: ${PULSE_DEMO_BASE_URL:-http://demo-service:8081}
+      PULSE_CORS_ORIGINS: ${PULSE_CORS_ORIGINS:-[]}
+    ports: ["127.0.0.1:${BACKEND_PORT:-8000}:8000"]
+    volumes: ["pulseboard-data:/data"]
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/api/health', timeout=3)"]
+      interval: 10s
+      timeout: 5s
+      start_period: 10s
+      retries: 3
+    stop_grace_period: 15s
+  frontend:
+    build:
+      context: ./frontend
+      args:
+        VITE_API_BASE_URL: ${VITE_API_BASE_URL:-/api}
+    restart: unless-stopped
+    ports: ["127.0.0.1:${FRONTEND_PORT:-8080}:80"]
+    depends_on:
+      backend:
+        condition: service_healthy
+  demo-service:
+    build:
+      context: .
+      dockerfile: demo-service/Dockerfile
+    restart: unless-stopped
+    init: true
+    ports: ["127.0.0.1:${DEMO_PORT:-8081}:8081"]
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8081/ok', timeout=3)"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+volumes:
+  pulseboard-data:

@@ -1,0 +1,46 @@
+name: pulseboard-public
+services:
+  backend:
+    build: ../backend
+    restart: unless-stopped
+    init: true
+    environment:
+      PULSE_DATABASE_PATH: /data/pulseboard.sqlite3
+      PULSE_READ_ONLY: "true"
+      PULSE_SEED_DEMO: "true"
+      PULSE_DEMO_BASE_URL: http://demo-service:8081
+      PULSE_CORS_ORIGINS: '["${FRONTEND_ORIGIN:?Set FRONTEND_ORIGIN to the exact HTTPS frontend origin}"]'
+      PULSE_INTERVAL_SECONDS: "15"
+      PULSE_TIMEOUT_SECONDS: "5"
+      PULSE_NETWORK_TIMEOUT_SECONDS: "3"
+      PULSE_CONCURRENCY: "5"
+    volumes: ["pulseboard-data:/data"]
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/api/health', timeout=3)"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    stop_grace_period: 15s
+  demo-service:
+    build:
+      context: ..
+      dockerfile: demo-service/Dockerfile
+    restart: unless-stopped
+    init: true
+  caddy:
+    image: caddy:2-alpine
+    restart: unless-stopped
+    environment:
+      API_DOMAIN: ${API_DOMAIN:?Set API_DOMAIN to your API hostname}
+    ports: ["80:80", "443:443", "443:443/udp"]
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy-data:/data
+      - caddy-config:/config
+    depends_on:
+      backend:
+        condition: service_healthy
+volumes:
+  pulseboard-data:
+  caddy-data:
+  caddy-config:
