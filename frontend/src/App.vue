@@ -69,7 +69,7 @@ watch(settings.data, (value) => {
         </div>
         <a
           class="source-link"
-          href="https://github.com/Denofix"
+          href="https://github.com/Denofix/PulseBoard"
           target="_blank"
           rel="noopener noreferrer"
           ><Github :size="16" /> Built in the open <ExternalLink :size="13"

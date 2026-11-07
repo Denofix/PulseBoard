@@ -1,6 +1,8 @@
-# PulseBoard: 80-second video outline
+# PulseBoard: 86-second video outline
 
 Use actual observations. Prepare the Compose stack and a healthy Demo API before recording.
+Record add-service and failure/recovery actions against the local owner stack. Use the public
+read-only Vercel demo for the closing segment.
 Keep a terminal with `docker compose stop -t 2 demo-service` and `docker compose start demo-service` ready.
 If editing out the sampling wait, show a small “15 seconds later” caption rather than implying instant detection.
 
@@ -13,7 +15,8 @@ If editing out the sampling wait, show a small “15 seconds later” caption ra
 | 42–53s | Repeated failed bars, one open incident, opening-check link | “Repeated failures continue that incident. This link shows the exact check that detected it.” |
 | 53–65s | Start demo-service; show UP and resolved incident | “The first successful response closes the incident and records recovery.” |
 | 65–74s | Restart backend, then refresh history | “Checks and incidents persist in SQLite. A monitoring gap stays a gap; PulseBoard never invents uptime.” |
-| 74–82s | README architecture, tests, final dashboard | “Built with FastAPI, httpx, SQLite, Vue 3 and Docker Compose. Original code is MIT licensed.” |
+| 74–86s | Public Vercel dashboard, README architecture and tests | “Built with FastAPI, httpx, SQLite, Vue and Docker. The read-only frontend runs on Vercel; its API runs on my local VM. The code is MIT licensed.” |
 
-Only show a public URL if it has actually been deployed and verified. Avoid claiming an SLA,
+The verified temporary demo is https://pulse-board-gilt.vercel.app. Check that the VM and tunnel are
+running before recording. Describe it as a temporary VM-backed demo. Avoid claiming an SLA,
 percentage productivity improvement, or time-weighted uptime from check-based statistics.

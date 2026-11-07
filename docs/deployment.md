@@ -1,7 +1,9 @@
 # Vercel frontend + persistent FastAPI server
 
-This is prepared configuration, not a completed deployment. No account, server, domain, or public
-demo URL has been provisioned. Platform documentation was checked on 2026-11-07:
+This guide describes the prepared permanent-server configuration. A temporary read-only frontend
+is deployed at [pulse-board-gilt.vercel.app](https://pulse-board-gilt.vercel.app), backed by a local
+Ubuntu VM and Cloudflare Quick Tunnel. The VPS/Caddy deployment below has not been executed.
+Platform documentation was checked on 2026-11-07:
 
 - [Vercel: Vite and SPA deep links](https://vercel.com/docs/frameworks/frontend/vite)
 - [Vercel project configuration](https://vercel.com/docs/project-configuration)

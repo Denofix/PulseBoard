@@ -6,10 +6,17 @@ PulseBoard is an open source, self-hosted HTTP monitor for small projects. Add a
 browser, and let your server keep watching. A compact Vue dashboard shows real checks, response times,
 observation gaps, and incidents linked to the check that opened them.
 
-![PulseBoard dashboard with actual local demo observations](docs/screenshots/dashboard-20261107.jpg)
+[Open the temporary read-only demo](https://pulse-board-gilt.vercel.app) ·
+[Verification record](docs/verification.md)
 
-[Service detail screenshot](docs/screenshots/service-20261107.jpg) ·
-[Narrow viewport screenshot](docs/screenshots/mobile-20261107.jpg)
+The frontend is hosted on Vercel. Its API runs on a local Ubuntu VM through a Cloudflare Quick Tunnel.
+Live data is available while the VM and tunnel are running. A new tunnel process can receive a new
+API hostname, which requires updating the frontend build-time URL and redeploying it.
+
+![Public read-only PulseBoard dashboard with actual demo observations](docs/screenshots/public-demo-20261107.png)
+
+[Local service detail screenshot](docs/screenshots/service-20261107.jpg) ·
+[Local narrow viewport screenshot](docs/screenshots/mobile-20261107.jpg)
 
 ## Start locally
 
@@ -237,7 +244,8 @@ for expected results and the separate browser-closed test.
 
 ## Hosting and public demo
 
-The frontend is prepared for **Vercel**; the stateful backend runs on a separate persistent server.
+The frontend is deployed on **Vercel**. The temporary demo backend runs on a local VM with persistent
+SQLite storage; the permanent hosting configuration targets a separate always-on server.
 See [deployment instructions](docs/deployment.md) for Vercel root/build settings, SPA fallback,
 `VITE_API_BASE_URL`, exact-origin CORS, Caddy HTTPS, and verification commands.
 With only a local VM, follow the [temporary public demo guide](docs/local-public-demo.md) for a
@@ -248,7 +256,12 @@ stack forces backend read-only mode and seeds known demo URLs. CORS is not authe
 Do not expose the writable owner API to the public internet. Public-demo mode exposes all records in
 its database, so use its separate Compose volume, not an owner database containing private URLs.
 
-**Deployment status:** no public deployment has been performed. No public demo URL is claimed.
+**Temporary public demo:** [pulse-board-gilt.vercel.app](https://pulse-board-gilt.vercel.app), verified
+on 2026-11-07 from the public HTTPS API checks and a browser dashboard with live observations.
+The backend rejects POST/DELETE with HTTP 403 and allows exactly this frontend origin through CORS.
+One UP service, an intentional HTTP 500, and an intentional timeout demonstrate the monitoring rules.
+This is a VM-dependent preview; permanent API hosting with a stable hostname has not been provisioned.
+
 The local Docker Compose stack and full failure/recovery/persistence drill passed on an Ubuntu VM
 on 2026-11-07. A separate manual check also confirmed continued monitoring with all dashboard tabs closed.
 See [verification results](docs/verification.md) for the actual checks performed during creation.

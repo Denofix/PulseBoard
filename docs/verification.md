@@ -9,7 +9,7 @@ Verified on 2026-11-07. Executed checks and prepared deployment work are disting
 | Backend and smoke-runner regression tests | **78 passed** | `python -m pytest backend/tests -q`, 1.03 seconds; includes ten public-demo preflight regression cases |
 | Frontend tests | **9 passed** | `npm --prefix frontend test`, two test files |
 | Vue / TypeScript type checking | **Passed** | `vue-tsc --noEmit`, included in the build |
-| Frontend production build | **Passed** | Vite 7.3.7; JS 138.06 kB / 51.22 kB gzip |
+| Frontend production build | **Passed** | Vite 7.3.7; JS 138.07 kB / 51.22 kB gzip; vue-tsc and build rerun after updating the repository link |
 | Native process smoke test | **Passed** | Real local HTTP; 11 target observations, two closed incidents |
 | Read-only preview preflight | **Passed with native HTTP processes** | Three seeded targets; POST/DELETE 403; exact CORS and wrong-origin failure; history and incidents survive backend restart |
 | Production dependency audit | **Passed at time checked** | `npm audit --omit=dev --audit-level=high`: zero vulnerabilities reported |
@@ -95,21 +95,40 @@ check on the VM: before closing the tabs, the latest observation was **#101 at 1
 reopening, it was **#109 at 15:44:03 UTC**. The supplied history screenshots show eight additional
 HTTP 200 observations at 15-second intervals over those two minutes. **VM browser-closed check: passed.**
 
-## Remaining public deployment
+## Public demo verification
 
-| Work | Next verification |
-| --- | --- |
-| Vercel | Configuration and instructions prepared from official docs; no deployment performed. |
-| Public API HTTPS / CORS | Caddy and a separate read-only Compose stack prepared; real DNS/TLS verification pending. |
-| Public demo URL | **Not published. No verified public URL exists yet.** |
+Deployed and checked on 2026-11-07 using a Vercel frontend and the separate VM preview stack.
 
-For a VM-only demonstration, `deploy/compose.tunnel.yaml` prepares a separate read-only stack and
-an optional Cloudflare Quick Tunnel. Its YAML parsed successfully; actual Compose startup on the VM
-is still pending. The preflight passed against native HTTP processes, including write rejection and
-exact-origin CORS. No actual Cloudflare URL or Vercel deployment has been verified yet; follow
-[the temporary demo guide](local-public-demo.md) and record the runtime results after launch.
+| Check | Result | Evidence |
+| --- | --- | --- |
+| Vercel production frontend | **Deployed** | Vercel reported Ready / Deployed to Production; initial deployment took 14 seconds |
+| Production URL | **Dashboard verified in the user's browser** | [pulse-board-gilt.vercel.app](https://pulse-board-gilt.vercel.app); read-only badge, three services and real observations |
+| Preview Docker Compose | **Passed on the Ubuntu VM** | Backend and demo-service healthy; separate `pulseboard-preview_preview-data` volume created |
+| Public HTTPS API | **Passed from the VM and user's browser** | Actual Quick Tunnel URL returned `status: ok` and `monitor_running: true`; no certificate bypass |
+| Backend write protection | **Passed over the public URL** | `scripts/check_public_demo.py` required read-only configuration and HTTP 403 for POST/DELETE |
+| Exact-origin CORS | **Passed over the public URL** | GET and OPTIONS allowed `https://pulse-board-gilt.vercel.app`; an unrelated origin received no allow-origin header |
+| Real demo states | **Passed in the deployed dashboard** | Demo API UP / HTTP 200; Demo failure DOWN / HTTP 500; Demo timeout DOWN / TIMEOUT; two open incidents |
+| Public SPA fallback | **Passed in the cloud browser** | Direct opening and reload of `/services/1` loaded the Vue application rather than a platform 404 |
+
+The active API URL during verification was
+`https://improving-arrived-stations-delivered.trycloudflare.com/api`. The Quick Tunnel runs
+`cloudflared` 2026.10.7. It has no permanent hostname or uptime guarantee; the VM and tunnel must stay
+running for the dashboard to retrieve live data. See [the temporary demo guide](local-public-demo.md).
+
+The cloud browser loaded the production Vue application but could not retrieve the API data. It
+displayed the separate API-unavailable state after one reload. The user's browser and public CLI
+preflight succeeded. Dynamic service-detail and incident-evidence interactions on the deployed site
+are therefore not claimed as checked by the cloud browser. Their local browser tests remain valid.
+The public dashboard screenshot is preserved at `docs/screenshots/public-demo-20261107.png`.
+
+## Remaining deployment checks
+
+- Record the latest GitHub Actions result after the preview and publication changes.
+- Complete the deployed service-detail, incident-evidence and narrow-viewport browser checks.
+- A permanent always-on API host, stable API hostname, and real Caddy TLS deployment remain future work.
 
 The 5–6 hour target is a planning estimate, not a claim of measured engineering time. Local MVP
 acceptance is complete, including the Compose drill and the manual browser-closed check on the VM.
 Source publication to [Denofix/PulseBoard](https://github.com/Denofix/PulseBoard) and hosted CI are
-complete. Remaining work is public deployment and verification when hosting is available.
+complete. The temporary public dashboard, HTTPS API, backend read-only enforcement, and exact-origin
+CORS are verified. Permanent hosting and the remaining public browser checks are distinguished above.

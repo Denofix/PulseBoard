@@ -16,13 +16,24 @@ Official documentation checked on 2026-11-07:
 - [Vite on Vercel](https://vercel.com/docs/frameworks/frontend/vite)
 - [Vercel environment variables](https://vercel.com/docs/environment-variables)
 
+## Verified deployment on 2026-11-07
+
+- Frontend production URL: [pulse-board-gilt.vercel.app](https://pulse-board-gilt.vercel.app).
+- API URL during verification: `https://improving-arrived-stations-delivered.trycloudflare.com/api`.
+- Exact allowed frontend origin: `https://pulse-board-gilt.vercel.app`.
+- Public preflight passed, including read-only HTTP 403 and positive/negative CORS checks.
+- The user's browser loaded all three demo services and their real observations.
+
+These URLs describe this deployment, not reusable default values. New deployments must use their own
+actual Vercel domain and assigned tunnel address. See [the verification record](verification.md).
+
 ## 1. Start the isolated demo API
 
 Run from the repository root. Add `sudo` to Docker commands if required by your VM.
 Copy the example once; keep the existing file when resuming a demo:
 
 ```bash
-cp -n deploy/tunnel.env.example deploy/.env.tunnel
+test -f deploy/.env.tunnel || cp deploy/tunnel.env.example deploy/.env.tunnel
 docker compose --env-file deploy/.env.tunnel -f deploy/compose.tunnel.yaml config --quiet
 docker compose --env-file deploy/.env.tunnel -f deploy/compose.tunnel.yaml up -d --build --wait backend demo-service
 python3 scripts/check_public_demo.py http://127.0.0.1:8001/api
