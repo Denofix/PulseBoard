@@ -15,7 +15,7 @@ Verified on 2026-11-07. Executed checks and prepared deployment work are disting
 | Production dependency audit | **Passed at time checked** | `npm audit --omit=dev --audit-level=high`: zero vulnerabilities reported |
 | Compose / public Compose / CI YAML | **Static parse passed** | YAML parsing is not Docker Compose schema or runtime validation |
 | Shell syntax | **Passed** | `bash -n scripts/smoke_compose.sh` |
-| GitHub Actions | **Passed** | Commit `fc9520a`; backend, frontend, and containers; [run #1](https://github.com/Denofix/PulseBoard/actions/runs/42389935624), total duration 2m 10s |
+| GitHub Actions | **Passed** | Code commit `4dfbc3e`; backend, frontend, and containers; [run 42397754707](https://github.com/Denofix/PulseBoard/actions/runs/42397754707), total duration 2m 32s |
 
 Backend tests cover HTTP URL and environment validation; HTTP 200/204/299/301/500; disabled redirects;
 network and total timeouts; connection, DNS, and TLS errors; and stopping at response headers without
@@ -109,6 +109,11 @@ Deployed and checked on 2026-11-07 using a Vercel frontend and the separate VM p
 | Exact-origin CORS | **Passed over the public URL** | GET and OPTIONS allowed `https://pulse-board-gilt.vercel.app`; an unrelated origin received no allow-origin header |
 | Real demo states | **Passed in the deployed dashboard** | Demo API UP / HTTP 200; Demo failure DOWN / HTTP 500; Demo timeout DOWN / TIMEOUT; two open incidents |
 | Public SPA fallback | **Passed in the cloud browser** | Direct opening and reload of `/services/1` loaded the Vue application rather than a platform 404 |
+| Deployed service page and live updates | **Passed in the user's desktop browser** | Demo API page showed its chart, history and read-only state; observations advanced from 239 to 240 at 15-second intervals |
+| Deployed incident evidence: HTTP 500 | **Passed in the user's desktop browser** | `/services/2?check=2#check-evidence` showed Check #2 at 16:44:36 UTC, DOWN, HTTP 500, 6.9 ms, and HTTP_STATUS |
+| Deployed incident evidence: timeout | **Passed in the user's desktop browser** | `/services/3?check=3#check-evidence` showed Check #3 at 16:44:39 UTC, DOWN, TIMEOUT, no HTTP response, and no latency value |
+| Historical incident evidence | **Passed** | Opening checks #2 and #3 remained directly accessible while current histories contained checks above #800; the links did not depend on loading older history pages |
+| Deployed phone layout | **Passed on an actual phone** | Overview metrics, navigation, service charts, heartbeat, check history and incidents rendered; wide tables retained horizontal scrolling inside their cards |
 
 The active API URL during verification was
 `https://improving-arrived-stations-delivered.trycloudflare.com/api`. The Quick Tunnel runs
@@ -116,19 +121,25 @@ The active API URL during verification was
 running for the dashboard to retrieve live data. See [the temporary demo guide](local-public-demo.md).
 
 The cloud browser loaded the production Vue application but could not retrieve the API data. It
-displayed the separate API-unavailable state after one reload. The user's browser and public CLI
-preflight succeeded. Dynamic service-detail and incident-evidence interactions on the deployed site
-are therefore not claimed as checked by the cloud browser. Their local browser tests remain valid.
+displayed the separate API-unavailable state after one reload. The public CLI preflight succeeded;
+dynamic desktop and phone checks were subsequently completed in the user's browsers, with supplied
+screenshots showing the actual service details and original incident checks. Dynamic API-backed
+interactions are therefore attributed to those checks rather than to the cloud browser.
 The public dashboard screenshot is preserved at `docs/screenshots/public-demo-20261107.png`.
 
-## Remaining deployment checks
+## Acceptance status and future hosting
 
-- Record the latest GitHub Actions result after the preview and publication changes.
-- Complete the deployed service-detail, incident-evidence and narrow-viewport browser checks.
-- A permanent always-on API host, stable API hostname, and real Caddy TLS deployment remain future work.
+**Local MVP and temporary public-demo acceptance are complete as of 2026-11-07.** The verified code
+commit is `4dfbc3e`. The supplied `gh run list` output confirms successful hosted CI for both the
+preview stack change (`aeabb91`, run 42392803077) and the published demo record (`4dfbc3e`, run
+42397754707). The acceptance update itself changes documentation only.
+
+A permanent always-on API host, stable API hostname, and real Caddy TLS deployment remain future
+work. The current demo depends on the local VM and Quick Tunnel; it is not an uptime commitment.
 
 The 5–6 hour target is a planning estimate, not a claim of measured engineering time. Local MVP
 acceptance is complete, including the Compose drill and the manual browser-closed check on the VM.
 Source publication to [Denofix/PulseBoard](https://github.com/Denofix/PulseBoard) and hosted CI are
 complete. The temporary public dashboard, HTTPS API, backend read-only enforcement, and exact-origin
-CORS are verified. Permanent hosting and the remaining public browser checks are distinguished above.
+CORS are verified. Desktop, phone, and original incident-evidence checks are also complete; permanent
+hosting is the remaining deployment step.

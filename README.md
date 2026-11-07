@@ -228,8 +228,9 @@ To work on the frontend alone against an existing backend: `npm --prefix fronten
 transports and temporary databases, without external websites. Frontend tests cover API errors,
 poll cleanup, real heartbeat data, graph gaps/null latency, and incident evidence links.
 The native smoke test uses real local HTTP servers and process stop/start, including DB recovery.
-GitHub Actions passed for commit `fc9520a` on 2026-11-07: backend, frontend, and container jobs
-completed successfully in [CI run #1](https://github.com/Denofix/PulseBoard/actions/runs/42389935624).
+GitHub Actions passed for code commit `4dfbc3e` on 2026-11-07: backend, frontend, and container jobs
+completed successfully in [the verified CI run](https://github.com/Denofix/PulseBoard/actions/runs/42397754707)
+in 2 minutes 32 seconds.
 
 For the real container drill, including persistence, run:
 
@@ -261,6 +262,10 @@ on 2026-11-07 from the public HTTPS API checks and a browser dashboard with live
 The backend rejects POST/DELETE with HTTP 403 and allows exactly this frontend origin through CORS.
 One UP service, an intentional HTTP 500, and an intentional timeout demonstrate the monitoring rules.
 This is a VM-dependent preview; permanent API hosting with a stable hostname has not been provisioned.
+
+**MVP acceptance completed on 2026-11-07:** desktop and phone views, service charts and history,
+direct service routes, and incident links to their original failed checks were verified. Opening
+check #2 showed HTTP 500; opening check #3 showed TIMEOUT with no HTTP response or latency value.
 
 The local Docker Compose stack and full failure/recovery/persistence drill passed on an Ubuntu VM
 on 2026-11-07. A separate manual check also confirmed continued monitoring with all dashboard tabs closed.
