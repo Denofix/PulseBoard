@@ -74,9 +74,13 @@ Push the source to your own GitHub repository, then import that repository into 
 | Build Command | `npm run build` |
 | Output Directory | `dist` |
 | Environment variable | `VITE_API_BASE_URL=https://api.your-domain.tld/api` |
+| Variable type | Config (public build-time URL) |
 
 Set the variable for the Vercel environments you use, then deploy. `VITE_*` values are public and baked
 into the build; changing one requires a new deployment. They contain no keys, tokens or passwords.
+Choose **Config**, not Secret, for `VITE_API_BASE_URL`. A saved Secret cannot be converted to Config
+in place; delete that variable and recreate the same key as Config if necessary. For the production
+domain, update the Production value and redeploy **Production**, then wait for the deployment to be Ready.
 The API must use HTTPS when the frontend does. In this split deployment, requests go directly to the
 absolute API URL; they do not use the local Vite/Nginx proxy.
 

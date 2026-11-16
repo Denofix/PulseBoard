@@ -7,6 +7,7 @@ browser, and let your server keep watching. A compact Vue dashboard shows real c
 observation gaps, and incidents linked to the check that opened them.
 
 [Open the temporary read-only demo](https://pulse-board-gilt.vercel.app) ·
+[User guide (English)](docs/user-guide.md) ·
 [Verification record](docs/verification.md)
 
 The frontend is hosted on Vercel. Its API runs on a local Ubuntu VM through a Cloudflare Quick Tunnel.
@@ -18,6 +19,16 @@ API hostname, which requires updating the frontend build-time URL and redeployin
 [Local service detail screenshot](docs/screenshots/service-20261107.jpg) ·
 [Local narrow viewport screenshot](docs/screenshots/mobile-20261107.jpg)
 
+## User documentation
+
+The [English user guide](docs/user-guide.md) covers installation on Linux/Ubuntu and Windows,
+first launch, adding and deleting services, reading charts and incidents, backups, and troubleshooting.
+Choose any download folder; the examples do not require a developer's personal directory.
+
+To bring the Vercel demo back online after starting your VM, follow
+[Resume after a VM shutdown](docs/local-public-demo.md#resume-after-a-vm-shutdown).
+It explains the separate preview stack, tunnel URL, Vercel Config variable, and Production redeploy.
+
 ## Start locally
 
 Requirements: Docker Engine with the Docker Compose v2 plugin. On an Ubuntu VMware client, run these
@@ -25,7 +36,7 @@ commands **inside the VM**, then open the dashboard in that VM's browser.
 
 ```bash
 cd pulseboard
-cp .env.example .env
+test -f .env || cp .env.example .env
 docker compose up -d --build --wait
 docker compose ps
 ```
