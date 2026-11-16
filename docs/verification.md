@@ -55,8 +55,9 @@ The real Vue app was tested against real FastAPI and demo-service through Vite's
 - Read-only mode showed its header label with **zero add/delete controls**. The dashboard continued
   to show actual checks. Backend write rejection was covered independently by the API tests.
 
-Screenshots in `docs/screenshots/` show actual observations. The responsive QA HTML entry is only
-used for development and is not an entry in the production build.
+The [screenshot gallery](screenshots/README.md) preserves the project author's desktop, mobile
+emulation, and actual-phone captures of real observations. Capture types and dimensions are listed
+separately. The responsive QA HTML entry is a development tool, not a production build entry.
 
 ## Real Docker Compose verification on the user's VM
 
@@ -125,7 +126,22 @@ displayed the separate API-unavailable state after one reload. The public CLI pr
 dynamic desktop and phone checks were subsequently completed in the user's browsers, with supplied
 screenshots showing the actual service details and original incident checks. Dynamic API-backed
 interactions are therefore attributed to those checks rather than to the cloud browser.
-The public dashboard screenshot is preserved at `docs/screenshots/public-demo-20261107.png`.
+The original acceptance dashboard screenshot is preserved at
+`docs/screenshots/public-demo-20261107.png`. Later screenshots are available in the
+[screenshot gallery](screenshots/README.md).
+
+## Screenshot refresh on 2026-11-16
+
+The project author supplied a new desktop Overview capture and three actual-phone service captures.
+The Overview shows three services, one Up, two intentionally Down, and the two original open incidents.
+The phone captures show the healthy service's metrics, response chart, heartbeat, check history, and
+empty service incident list. Recorded observation gaps remain visible after the VM's downtime.
+
+The gallery also retains the author's earlier clear HTTP 500 and timeout evidence captures, local
+owner workspace and add-service dialog, and browser mobile-emulation views. The replacement files
+are byte-for-byte copies of the supplied images, without resizing or recompression. This update
+changes documentation and screenshots; the automated verification results above retain their
+original execution date.
 
 ## Acceptance status and future hosting
 

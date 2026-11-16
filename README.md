@@ -14,10 +14,11 @@ The frontend is hosted on Vercel. Its API runs on a local Ubuntu VM through a Cl
 Live data is available while the VM and tunnel are running. A new tunnel process can receive a new
 API hostname, which requires updating the frontend build-time URL and redeploying it.
 
-![Public read-only PulseBoard dashboard with actual demo observations](docs/screenshots/public-demo-20261107.png)
+![Public read-only PulseBoard dashboard captured by the project author on 16 November 2026](docs/screenshots/public-demo-20261116.png)
 
-[Local service detail screenshot](docs/screenshots/service-20261107.jpg) ·
-[Local narrow viewport screenshot](docs/screenshots/mobile-20261107.jpg)
+[Desktop service detail](docs/screenshots/service-20261107.png) ·
+[Actual phone screenshot](docs/screenshots/mobile-service-20261116.jpg) ·
+[All screenshots](docs/screenshots/README.md)
 
 ## User documentation
 
